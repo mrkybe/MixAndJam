@@ -81,11 +81,11 @@ public class DeathScreenController : MonoBehaviour
                 StartCoroutine(PickupTextFlash("You pickup some lockpicks"));
                 break;
             case Keycard.CROWBAR:
-                lockpick = "Crowbar\n";
+                crowbar = "Crowbar\n";
                 StartCoroutine(PickupTextFlash("You pickup a crowbar"));
                 break;
             case Keycard.TNT:
-                lockpick = "TNT";
+                tnt = "TNT";
                 StartCoroutine(PickupTextFlash("You pickup a bundle of dynamite"));
                 break;
         }

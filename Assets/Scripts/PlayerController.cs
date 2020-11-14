@@ -38,14 +38,24 @@ public class PlayerController : MonoBehaviour
 
     private AudioSource audioSource;
 
+    Transform ReferenceTransform;
+    Camera ReferenceCamera;
+    Plane GroundPlane;
+
+    Vector2 result = new Vector2();
+    Ray ray;
+    float distance;
+
     private void Awake()
     {
         HeldKeycards = new List<Keycard>();
         audioSource = GetComponent<AudioSource>();
         rb = GetComponent<Rigidbody2D>();
+        GroundPlane = new Plane(Vector3.forward, 0);
         if (Instance == null)
         {
             Instance = this;
+            ReferenceTransform = Instance.transform;
         }
         else
         {
@@ -57,9 +67,20 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
+        if (ReferenceCamera == null || ReferenceTransform == null)
+        {
+            ReferenceCamera = Camera.main;
+            ReferenceTransform = Instance.transform;
+        }
         controls = ControlFreak.Controls;
         controls.Player.Sprint.started += Sprint_started;
         controls.Player.Sprint.canceled += Sprint_canceled;
+        controls.Player.Suicide.performed += Suicide_performed;
+    }
+
+    private void Suicide_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
+    {
+        Destroy(gameObject);
     }
 
     private void Sprint_started(UnityEngine.InputSystem.InputAction.CallbackContext obj)
@@ -168,6 +189,16 @@ public class PlayerController : MonoBehaviour
     private Vector3 worldMousePosition = default;
     private void GetMouseWorldPosition()
     {
-        worldMousePosition = controls.Player.CursorWorldPosition.ReadValue<Vector2>();
+        worldMousePosition = ProcessMouseScreenCoordinates(controls.Player.CursorWorldPosition.ReadValue<Vector2>());
+    }
+
+    private Vector2 ProcessMouseScreenCoordinates(Vector2 value)
+    {
+        ray = ReferenceCamera.ScreenPointToRay(value);
+        GroundPlane.Raycast(ray, out distance);
+        var pos = ray.GetPoint(distance);
+        result.x = pos.x;
+        result.y = pos.y;
+        return result;
     }
 }

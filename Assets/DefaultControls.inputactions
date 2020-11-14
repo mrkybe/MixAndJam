@@ -23,9 +23,17 @@
                 },
                 {
                     "name": "CursorWorldPosition",
-                    "type": "PassThrough",
+                    "type": "Value",
                     "id": "8c2621a5-d734-4f91-95f5-ba5b27ffe61c",
                     "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Suicide",
+                    "type": "Button",
+                    "id": "a9c0ecd1-04e4-4b05-9755-98b8d2187452",
+                    "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
                 }
@@ -102,9 +110,20 @@
                     "id": "98ad39bb-2521-45ca-8156-76b042a370b5",
                     "path": "<Mouse>/position",
                     "interactions": "",
-                    "processors": "MouseToWorldPosition",
+                    "processors": "",
                     "groups": "",
                     "action": "CursorWorldPosition",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "5f469eff-874d-4470-937f-ec168a52f036",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Suicide",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

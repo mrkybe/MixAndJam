@@ -36,9 +36,17 @@ public class @DefaultControls : IInputActionCollection, IDisposable
                 },
                 {
                     ""name"": ""CursorWorldPosition"",
-                    ""type"": ""PassThrough"",
+                    ""type"": ""Value"",
                     ""id"": ""8c2621a5-d734-4f91-95f5-ba5b27ffe61c"",
                     ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Suicide"",
+                    ""type"": ""Button"",
+                    ""id"": ""a9c0ecd1-04e4-4b05-9755-98b8d2187452"",
+                    ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
                 }
@@ -115,9 +123,20 @@ public class @DefaultControls : IInputActionCollection, IDisposable
                     ""id"": ""98ad39bb-2521-45ca-8156-76b042a370b5"",
                     ""path"": ""<Mouse>/position"",
                     ""interactions"": """",
-                    ""processors"": ""MouseToWorldPosition"",
+                    ""processors"": """",
                     ""groups"": """",
                     ""action"": ""CursorWorldPosition"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5f469eff-874d-4470-937f-ec168a52f036"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Suicide"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -158,6 +177,7 @@ public class @DefaultControls : IInputActionCollection, IDisposable
         m_Player_Movement = m_Player.FindAction("Movement", throwIfNotFound: true);
         m_Player_Sprint = m_Player.FindAction("Sprint", throwIfNotFound: true);
         m_Player_CursorWorldPosition = m_Player.FindAction("CursorWorldPosition", throwIfNotFound: true);
+        m_Player_Suicide = m_Player.FindAction("Suicide", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_RestartLevel = m_UI.FindAction("RestartLevel", throwIfNotFound: true);
@@ -213,6 +233,7 @@ public class @DefaultControls : IInputActionCollection, IDisposable
     private readonly InputAction m_Player_Movement;
     private readonly InputAction m_Player_Sprint;
     private readonly InputAction m_Player_CursorWorldPosition;
+    private readonly InputAction m_Player_Suicide;
     public struct PlayerActions
     {
         private @DefaultControls m_Wrapper;
@@ -220,6 +241,7 @@ public class @DefaultControls : IInputActionCollection, IDisposable
         public InputAction @Movement => m_Wrapper.m_Player_Movement;
         public InputAction @Sprint => m_Wrapper.m_Player_Sprint;
         public InputAction @CursorWorldPosition => m_Wrapper.m_Player_CursorWorldPosition;
+        public InputAction @Suicide => m_Wrapper.m_Player_Suicide;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -238,6 +260,9 @@ public class @DefaultControls : IInputActionCollection, IDisposable
                 @CursorWorldPosition.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCursorWorldPosition;
                 @CursorWorldPosition.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCursorWorldPosition;
                 @CursorWorldPosition.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCursorWorldPosition;
+                @Suicide.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSuicide;
+                @Suicide.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSuicide;
+                @Suicide.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSuicide;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -251,6 +276,9 @@ public class @DefaultControls : IInputActionCollection, IDisposable
                 @CursorWorldPosition.started += instance.OnCursorWorldPosition;
                 @CursorWorldPosition.performed += instance.OnCursorWorldPosition;
                 @CursorWorldPosition.canceled += instance.OnCursorWorldPosition;
+                @Suicide.started += instance.OnSuicide;
+                @Suicide.performed += instance.OnSuicide;
+                @Suicide.canceled += instance.OnSuicide;
             }
         }
     }
@@ -293,6 +321,7 @@ public class @DefaultControls : IInputActionCollection, IDisposable
         void OnMovement(InputAction.CallbackContext context);
         void OnSprint(InputAction.CallbackContext context);
         void OnCursorWorldPosition(InputAction.CallbackContext context);
+        void OnSuicide(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {
