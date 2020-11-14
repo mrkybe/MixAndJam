@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
+public enum Keycard { LOCKPICK, CROWBAR, TNT }
+
 public class PlayerController : MonoBehaviour
 {
     private DefaultControls controls;
@@ -27,6 +29,8 @@ public class PlayerController : MonoBehaviour
 
     public bool IsSprinting = false;
 
+    public List<Keycard> HeldKeycards = new List<Keycard>();
+
     public List<GameObject> GhostlyScreenShakeGhosts = new List<GameObject>();
 
     [SerializeField]
@@ -36,6 +40,7 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
+        HeldKeycards = new List<Keycard>();
         audioSource = GetComponent<AudioSource>();
         rb = GetComponent<Rigidbody2D>();
         if (Instance == null)
@@ -74,11 +79,35 @@ public class PlayerController : MonoBehaviour
         {
             Destroy(collision.gameObject);
             audioSource.PlayOneShot(PickupSound.Random());
+            DeathScreenController.Instance.Gold++;
         }
 
         if (collision.gameObject.CompareTag("Ghost"))
         {
             Destroy(gameObject);
+        }
+
+        if (collision.gameObject.CompareTag("Keycard"))
+        {
+            Destroy(collision.gameObject);
+            audioSource.PlayOneShot(PickupSound.Random());
+
+            var sr = collision.GetComponent<SpriteRenderer>();
+            if (sr.sprite.name.ToLower().Contains("lockpick"))
+            {
+                HeldKeycards.Add(Keycard.LOCKPICK);
+                DeathScreenController.Instance.PickedUp(Keycard.LOCKPICK);
+            }
+            if (sr.sprite.name.ToLower().Contains("crowbar"))
+            {
+                HeldKeycards.Add(Keycard.CROWBAR);
+                DeathScreenController.Instance.PickedUp(Keycard.CROWBAR);
+            }
+            if (sr.sprite.name.ToLower().Contains("tnt"))
+            {
+                HeldKeycards.Add(Keycard.TNT);
+                DeathScreenController.Instance.PickedUp(Keycard.TNT);
+            }
         }
     }
 
@@ -119,6 +148,11 @@ public class PlayerController : MonoBehaviour
         {
             GhostlyScreenShakeGhosts.Remove(ghost);
         }
+    }
+
+    public void OnDestroy()
+    {
+        DeathScreenController.Instance.PlayerDied();
     }
 
     private void AimFlashlightAtMouse()

@@ -76,6 +76,10 @@ public class LightFlicker : MonoBehaviour
 
     public void Flick(Transform g)
     {
+        if (GameEnded)
+        {
+            return;
+        }
         for (int i = 0; i < LightsTr.Length; i++)
         {
             if (g == LightsTr[i])
@@ -84,6 +88,26 @@ public class LightFlicker : MonoBehaviour
                 StartCoroutine(Unfade(i));
                 break;
             }
+        }
+    }
+
+    private bool GameEnded = false;
+    public void DimAll()
+    {
+        StopAllCoroutines();
+        for (int i = 0; i < LightsTr.Length; i++)
+        {
+            StartCoroutine(Fade(i));
+        }
+        GameEnded = true;
+    }
+
+    IEnumerator Fade(int i)
+    {
+        for (float ft = 0f; ft <= 2f; ft += Time.deltaTime)
+        {
+            ghostlyDimming[i] = (2f - ft) / 2f;
+            yield return null;
         }
     }
 

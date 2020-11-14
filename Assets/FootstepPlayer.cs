@@ -30,17 +30,13 @@ public class FootstepPlayer : MonoBehaviour
 
         originalPitch = audioSource.pitch;
         originalVolume = audioSource.volume;
+        lastFootstepPosition = transform.position;
     }
 
     // Update is called once per frame
     void Update()
     {
-        //Footsteps();
-    }
-
-    public void StepTaken()
-    {
-        PlayRandomFootstepSound();
+        Footsteps();
     }
 
     private void PlayRandomFootstepSound()
@@ -58,18 +54,7 @@ public class FootstepPlayer : MonoBehaviour
             audioSource.pitch = originalPitch + originalPitch * Random.Range(PitchVariation * -1, PitchVariation);
             audioSource.volume = originalVolume + originalVolume * Random.Range(VolumeVariation * -1, VolumeVariation);
 
-            if (leftRight)
-            {
-                audioSource.panStereo = -StereoPan;
-                leftRight = !leftRight;
-            }
-            else
-            {
-                audioSource.panStereo = StereoPan;
-                leftRight = !leftRight;
-            }
-
-            audioSource.PlayOneShot(footstepSounds.Random());
+            PlayRandomFootstepSound();
         }
     }
 }

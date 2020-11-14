@@ -7,6 +7,7 @@ TagManager:
   - GenerateShadowCasters
   - PickupDot
   - Ghost
+  - Keycard
   layers:
   - Default
   - TransparentFX

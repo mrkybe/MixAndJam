@@ -20,6 +20,7 @@ public class PathFollower : MonoBehaviour
     private void Awake()
     {
         PathNodes = new List<Transform>();
+        Path.SetActive(false);
     }
 
     void Start()
