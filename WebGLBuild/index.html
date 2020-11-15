@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Unity WebGL Player | Candelabra</title>
+  </head>
+  <body style="text-align: center">
+    <canvas id="unity-canvas" style="width: 1600px; height: 900px; background: #231F20"></canvas>
+    <script src="Build/WebGLBuild.loader.js"></script>
+    <script>
+      createUnityInstance(document.querySelector("#unity-canvas"), {
+        dataUrl: "Build/WebGLBuild.data",
+        frameworkUrl: "Build/WebGLBuild.framework.js",
+        codeUrl: "Build/WebGLBuild.wasm",
+        streamingAssetsUrl: "StreamingAssets",
+        companyName: "Kybe",
+        productName: "Candelabra",
+        productVersion: "1.0",
+      });
+    </script>
+  </body>
+</html>

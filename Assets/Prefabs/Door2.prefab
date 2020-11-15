@@ -7,21 +7,33 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1852164450, guid: e8cde0ddce7b4534ca92fa8f4d9a5889, type: 3}
+      propertyPath: m_InstanceId
+      value: -714088
+      objectReference: {fileID: 0}
     - target: {fileID: 6205651275781894601, guid: e8cde0ddce7b4534ca92fa8f4d9a5889, type: 3}
       propertyPath: m_Name
       value: Door2
       objectReference: {fileID: 0}
     - target: {fileID: 6205651275781894604, guid: e8cde0ddce7b4534ca92fa8f4d9a5889, type: 3}
+      propertyPath: DoorOpenSFX.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6205651275781894604, guid: e8cde0ddce7b4534ca92fa8f4d9a5889, type: 3}
       propertyPath: DoorLevel
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 6205651275781894604, guid: e8cde0ddce7b4534ca92fa8f4d9a5889, type: 3}
+      propertyPath: DoorOpenSFX.Array.data[0]
+      value: 
+      objectReference: {fileID: 8300000, guid: f031fe1bfc22eee47bdfe267d168358e, type: 3}
     - target: {fileID: 6205651275781894606, guid: e8cde0ddce7b4534ca92fa8f4d9a5889, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 6.72
       objectReference: {fileID: 0}
     - target: {fileID: 6205651275781894606, guid: e8cde0ddce7b4534ca92fa8f4d9a5889, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.96
       objectReference: {fileID: 0}
     - target: {fileID: 6205651275781894606, guid: e8cde0ddce7b4534ca92fa8f4d9a5889, type: 3}
       propertyPath: m_LocalPosition.z
