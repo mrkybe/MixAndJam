@@ -20,6 +20,12 @@ public class DeathScreenController : MonoBehaviour
     [SerializeField]
     TMP_Text KeycardsHeldText;
 
+    [SerializeField]
+    AudioClip PlayerDeathSound;
+
+    [SerializeField]
+    AudioClip PlayerNextSound;
+
     public int Gold = 0;
 
     public static DeathScreenController Instance { get; private set; }
@@ -56,7 +62,8 @@ public class DeathScreenController : MonoBehaviour
     {
         DeathText.enabled = true;
         DeathText.text = DeathTexts.Random();
-
+        Camera.main.GetComponent<AudioListener>().enabled = true;
+        Camera.main.GetComponent<AudioSource>().PlayOneShot(PlayerDeathSound);
         ScoreText.enabled = true;
 
         ScoreText.text = $"{Gold} Gold Collected";
@@ -93,6 +100,11 @@ public class DeathScreenController : MonoBehaviour
         KeycardsHeldText.text = lockpick + crowbar + tnt;
     }
 
+    public void SayText(string message)
+    {
+        StartCoroutine(PickupTextFlash(message));
+    }
+
     private IEnumerator PickupTextFlash(string message)
     {
         KeycardPickupText.enabled = true;
@@ -106,5 +118,28 @@ public class DeathScreenController : MonoBehaviour
     {
         Scene scene = SceneManager.GetActiveScene();
         SceneManager.LoadScene(scene.name);
+    }
+
+    public void NextLevel()
+    {
+        ControlFreak.Controls.UI.RestartLevel.performed += NextLevel_performed;
+        ControlFreak.Controls.Player.Disable();
+        DeathText.enabled = true;
+        DeathText.text = "Closer to the end...";
+
+        ScoreText.enabled = true;
+
+        ScoreText.text = $"{Gold} Gold Collected";
+
+        InfoText.enabled = true;
+        InfoText.text = "Press Space to ascend";
+
+        LightFlicker.Instance.DimAll();
+    }
+
+    private void NextLevel_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
+    {
+        Scene scene = SceneManager.GetActiveScene();
+        SceneManager.LoadScene(scene.buildIndex + 1);
     }
 }

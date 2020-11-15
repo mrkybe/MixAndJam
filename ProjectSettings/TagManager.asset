@@ -8,6 +8,7 @@ TagManager:
   - PickupDot
   - Ghost
   - Keycard
+  - LevelExit
   layers:
   - Default
   - TransparentFX

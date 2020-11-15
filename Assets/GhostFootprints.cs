@@ -23,14 +23,18 @@ public class GhostFootprints : MonoBehaviour
         activeSteps = new List<GameObject>();
     }
 
+    private bool alternateFootsteps = true;
     void Update()
     {
         if (Vector3.Distance(LastSpawnedPosition, transform.position) > SpawnDistance)
         {
-            var newInstance = Instantiate(FootprintPrefab, transform.position, ExtensionMethods.RotationFromVector((transform.position - LastSpawnedPosition).normalized));
+            var newInstance = Instantiate(FootprintPrefab, transform.position, ExtensionMethods.RotationFromVector((transform.position - LastSpawnedPosition).normalized +
+                                                                                                                    (Random.insideUnitCircle.ToV3XY() / 4.5f)).normalized);
             LastSpawnedPosition = transform.position;
             activeSteps.Add(newInstance);
             SpriteRenderer sr = newInstance.GetComponent<SpriteRenderer>();
+            sr.flipY = alternateFootsteps;
+            alternateFootsteps = !alternateFootsteps;
             Color c = sr.material.color;
             c.a = 0f;
             sr.material.color = c;

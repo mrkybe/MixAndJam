@@ -103,7 +103,18 @@ public class DoorController : MonoBehaviour
     {
         if (collision.transform.CompareTag("Player"))
         {
-
+            if (DoorLevel == 1)
+            {
+                DeathScreenController.Instance.SayText("I'll need some lockpicks, the key is long gone");
+            }
+            if (DoorLevel == 2)
+            {
+                DeathScreenController.Instance.SayText("I'll need a crowbar to pry this open");
+            }
+            if (DoorLevel == 3)
+            {
+                DeathScreenController.Instance.SayText("This door way was bricked closed long ago");
+            }
         }
     }
 

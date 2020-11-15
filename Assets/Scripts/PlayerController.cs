@@ -33,6 +33,8 @@ public class PlayerController : MonoBehaviour
 
     public List<GameObject> GhostlyScreenShakeGhosts = new List<GameObject>();
 
+    private Animator animController;
+
     [SerializeField]
     public AudioClip[] PickupSound;
 
@@ -48,6 +50,7 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
+        animController = GetComponent<Animator>();
         HeldKeycards = new List<Keycard>();
         audioSource = GetComponent<AudioSource>();
         rb = GetComponent<Rigidbody2D>();
@@ -93,6 +96,14 @@ public class PlayerController : MonoBehaviour
         IsSprinting = false;
     }
 
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.transform.GetComponent<DoorController>())
+        {
+            Debug.Log("door is closed");
+        }
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         Debug.Log("bonk");
@@ -129,6 +140,11 @@ public class PlayerController : MonoBehaviour
                 HeldKeycards.Add(Keycard.TNT);
                 DeathScreenController.Instance.PickedUp(Keycard.TNT);
             }
+        }
+
+        if (collision.gameObject.CompareTag("LevelExit"))
+        {
+            DeathScreenController.Instance.NextLevel();
         }
     }
 
@@ -184,6 +200,27 @@ public class PlayerController : MonoBehaviour
     private void GetMovementInput()
     {
         moveDirection = controls.Player.Movement.ReadValue<Vector2>();
+
+        if (Vector3.Dot(moveDirection, new Vector3(0, -1, 0)) > 0.5f)
+        {
+            animController.Play("PlayerWalkDown");
+        }
+        else if (Vector3.Dot(moveDirection, new Vector3(0, 1, 0)) > 0.5f)
+        {
+            animController.Play("PlayerWalkUp");
+        }
+        else if (Vector3.Dot(moveDirection, new Vector3(1, 0, 0)) > 0.5f)
+        {
+            animController.Play("PlayerWalkRight");
+        }
+        else if (Vector3.Dot(moveDirection, new Vector3(-1, 0, 0)) > 0.5f)
+        {
+            animController.Play("PlayerWalkLeft");
+        }
+        if (moveDirection.magnitude < 0.25f)
+        {
+            animController.Play("PlayerIdle");
+        }
     }
 
     private Vector3 worldMousePosition = default;

@@ -184,7 +184,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   FootprintPrefab: {fileID: 2827206376048452687, guid: 6c7ff8e3cfd0b0e49810a873a9c72535, type: 3}
-  SpawnDistance: 0.3
+  SpawnDistance: 0.5
   GhostlyDimmingUnfadeCurve:
     serializedVersion: 2
     m_Curve:
