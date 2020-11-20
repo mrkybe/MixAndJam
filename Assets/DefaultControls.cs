@@ -153,6 +153,14 @@ public class @DefaultControls : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Zoom"",
+                    ""type"": ""Value"",
+                    ""id"": ""520d8b87-117f-4e12-9b7a-13c4407a32c5"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -164,6 +172,17 @@ public class @DefaultControls : IInputActionCollection, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""RestartLevel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""35f91970-a7ee-475b-8721-6ee487facbed"",
+                    ""path"": ""<Mouse>/scroll"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Zoom"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -181,6 +200,7 @@ public class @DefaultControls : IInputActionCollection, IDisposable
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_RestartLevel = m_UI.FindAction("RestartLevel", throwIfNotFound: true);
+        m_UI_Zoom = m_UI.FindAction("Zoom", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -288,11 +308,13 @@ public class @DefaultControls : IInputActionCollection, IDisposable
     private readonly InputActionMap m_UI;
     private IUIActions m_UIActionsCallbackInterface;
     private readonly InputAction m_UI_RestartLevel;
+    private readonly InputAction m_UI_Zoom;
     public struct UIActions
     {
         private @DefaultControls m_Wrapper;
         public UIActions(@DefaultControls wrapper) { m_Wrapper = wrapper; }
         public InputAction @RestartLevel => m_Wrapper.m_UI_RestartLevel;
+        public InputAction @Zoom => m_Wrapper.m_UI_Zoom;
         public InputActionMap Get() { return m_Wrapper.m_UI; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -305,6 +327,9 @@ public class @DefaultControls : IInputActionCollection, IDisposable
                 @RestartLevel.started -= m_Wrapper.m_UIActionsCallbackInterface.OnRestartLevel;
                 @RestartLevel.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnRestartLevel;
                 @RestartLevel.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnRestartLevel;
+                @Zoom.started -= m_Wrapper.m_UIActionsCallbackInterface.OnZoom;
+                @Zoom.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnZoom;
+                @Zoom.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnZoom;
             }
             m_Wrapper.m_UIActionsCallbackInterface = instance;
             if (instance != null)
@@ -312,6 +337,9 @@ public class @DefaultControls : IInputActionCollection, IDisposable
                 @RestartLevel.started += instance.OnRestartLevel;
                 @RestartLevel.performed += instance.OnRestartLevel;
                 @RestartLevel.canceled += instance.OnRestartLevel;
+                @Zoom.started += instance.OnZoom;
+                @Zoom.performed += instance.OnZoom;
+                @Zoom.canceled += instance.OnZoom;
             }
         }
     }
@@ -326,5 +354,6 @@ public class @DefaultControls : IInputActionCollection, IDisposable
     public interface IUIActions
     {
         void OnRestartLevel(InputAction.CallbackContext context);
+        void OnZoom(InputAction.CallbackContext context);
     }
 }
